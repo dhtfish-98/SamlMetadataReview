@@ -1,0 +1,30 @@
+{
+  "recorded_date": "2026-10-02",
+  "project": "SamlMetadataReview",
+  "source_code_sha256": "dde0374c008bc67731d5b7f65d17dd80940d8a5c2585551f1d4fd2ebe82b5738",
+  "wheel_filename": "cvp_saml_metadata_review-0.1.0-py3-none-any.whl",
+  "wheel_sha256": "050ee80122bb5e8bda76369ffe5009e6d18d3f20412f4d47b768caa40fc1ad76",
+  "build_setuptools": "84.0.0",
+  "runtime_dependencies": [
+    "cryptography==50.0.2",
+    "PyNaCl==1.6.2"
+  ],
+  "unit_test_count": 13,
+  "source_unit_tests": "PASS",
+  "independently_installed_unit_tests": "PASS",
+  "installed_source_bytes_equal": true,
+  "normal_tests_change_source_or_examples": false,
+  "installed_valid_cli_exit": 0,
+  "installed_invalid_cli_exit": 1,
+  "installed_network_disabled_result": "PASS",
+  "comparison_status": "PASS",
+  "comparison_detail": {
+    "reference": "OneLogin fixed upstream SAML metadata XSD via lxml 6.0.2",
+    "synthetic_metadata_schema_valid_and_new_static_profile_valid": true,
+    "not_XML_signature_validation": true,
+    "schema_invalid_key_use_role_endpoint_and_role_flag_rejected_by_both": true,
+    "ASCII_unsignedShort_valid_and_invalid_index_vectors_match_XSD": true
+  },
+  "not_whole_upstream_equivalence": true,
+  "CVP_eligibility": "OPEN"
+}

@@ -1,0 +1,14 @@
+{
+  "project": "SamlMetadataReview",
+  "status": "PASS",
+  "test_count": 13,
+  "wheel": "cvp_saml_metadata_review-0.1.0-py3-none-any.whl",
+  "wheel_sha256": "050ee80122bb5e8bda76369ffe5009e6d18d3f20412f4d47b768caa40fc1ad76",
+  "verification": "Local supported and malformed input tests, wheel build, separate install, imported package origin and CLI checks",
+  "reproduction": [
+    "python -m pip install .",
+    "python -m unittest discover -s tests -v",
+    "python -m pip wheel --no-deps --wheel-dir artifacts ."
+  ],
+  "limits": "Point-in-time engineering evidence only; CVP qualification and approval remain OPEN"
+}

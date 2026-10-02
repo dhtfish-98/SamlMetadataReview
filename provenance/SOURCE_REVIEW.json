@@ -1,0 +1,37 @@
+{
+  "source_repository": "https://github.com/SAML-Toolkits/python3-saml",
+  "source_commit": "52d2ac8da3f35262755f6e1c32ba7c62a6011fe1",
+  "source_license": "MIT",
+  "source_archive_sha256": "f010097720f4d5dedc944f4af11d7844372af00556d7bb5e53e8af7f899c3115",
+  "review_focus": [
+    "static entity/SSO role signing certificate and endpoint extraction",
+    "SAML metadata schema, role endpoint/key-use mutations and intentionally excluded online behavior"
+  ],
+  "complete_selected_files_retained_in_research_archive": true,
+  "research_archive_path": "identity/upstream/saml",
+  "selected_files": [
+    {
+      "path": "src/onelogin/saml2/idp_metadata_parser.py",
+      "sha256": "6b1a73125d67b869586bad688b24d6e03338d05112d8fd0211373f7b5fde8156",
+      "bytes": 11749,
+      "lines": 274,
+      "url": "https://github.com/SAML-Toolkits/python3-saml/blob/52d2ac8da3f35262755f6e1c32ba7c62a6011fe1/src/onelogin/saml2/idp_metadata_parser.py"
+    },
+    {
+      "path": "src/onelogin/saml2/schemas/saml-schema-metadata-2.0.xsd",
+      "sha256": "e0b32d3b70dd301c4f3528a22310f50bf633734f1c8ffe46b66f503e66acbeca",
+      "bytes": 15895,
+      "lines": 336,
+      "url": "https://github.com/SAML-Toolkits/python3-saml/blob/52d2ac8da3f35262755f6e1c32ba7c62a6011fe1/src/onelogin/saml2/schemas/saml-schema-metadata-2.0.xsd"
+    },
+    {
+      "path": "src/onelogin/saml2/schemas/xmldsig-core-schema.xsd",
+      "sha256": "336147eb6d7ccf9b3d4df93080f8680a451c3411aae1b1f5e6009958a3215dd5",
+      "bytes": 10003,
+      "lines": 309,
+      "url": "https://github.com/SAML-Toolkits/python3-saml/blob/52d2ac8da3f35262755f6e1c32ba7c62a6011fe1/src/onelogin/saml2/schemas/xmldsig-core-schema.xsd"
+    }
+  ],
+  "new_implementation_all_source_files_reviewed": true,
+  "whole_upstream_platform_equivalence": false
+}

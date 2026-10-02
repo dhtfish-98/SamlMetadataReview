@@ -1,0 +1,35 @@
+# SamlMetadataReview
+
+Local SAML 2.0 metadata identity, role, binding, endpoint and public signing-certificate configuration audit, across bounded entities and inherited expiration.
+
+This is an independently implemented, complete selected offline input profile. It is not an equivalent rewrite of the entire upstream platform. Cryptographic primitives use cryptography; no upstream application is called.
+
+## Contract
+
+Run `saml-metadata-review request.json` or pipe JSON to `saml-metadata-review -`. Every input is local and supplied by its authorized owner. Parsing is bounded; duplicate fields, unknown algorithms, unsupported semantics, and failed signatures fail closed. The CLI returns 0 for PASS, 1 for FAIL, and 2 for OPEN. PASS applies only to the declared profile; it is not a general safety or CVP eligibility finding. Output excludes private material and raw credential identifiers.
+
+## Boundaries
+
+- Full declared static profile; XMLDSig presence never implies validation. No SSO/SLO execution, credentials, fetch, XML signing, encryption, AttributeAuthority, extensions, or full OASIS schema equivalence. Unsupported role semantics are rejected.
+
+CVP organizational eligibility, an actually blocked legitimate task, application review, and approval remain OPEN. A repository and passing tests do not establish eligibility.
+
+## Complete input profile
+
+Required `metadata_xml`, complete `expected_entity_ids` and timezone-aware `now` describe local SAML 2.0 EntityDescriptor/EntitiesDescriptor metadata. Inherited expiration, exact identity set, unique declared SP/IDP roles, signing certificate material, HTTPS endpoints, known POST/Redirect/SOAP bindings and endpoint index/boolean fields are checked. Explicit KeyDescriptor use permits signing/encryption only; omitted use supplies dual use. IDP endpoints permit SingleSignOnService/SingleLogoutService, while SP endpoints permit AssertionConsumerService/SingleLogoutService. Role-specific flags are enforced. ACS index accepts bounded ASCII [+]?[0-9]+ after XML whitespace collapse, then checks 0 through 65535; Unicode digits and underscores are rejected. All XML nodes, including opaque XMLDSig subtrees, count toward 8192-node and depth-32 limits. DTD/entities, unknown operational children and unsupported attributes fail closed. An XMLDSig subtree may be present but is opaque and unverified; output always states entity `metadata_signature_verified=false` and overall `verified=false`. No SSO, XML signature, credential or identity-provider authenticity result is inferred.
+
+All accepted Ed25519 public keys are canonical nonidentity points in the main subgroup, checked through libsodium. Ed25519 signature R points must also be canonical nonidentity main-subgroup points and S must be below the group order. Certificates and CRLs require exactly matching inner/outer AlgorithmIdentifiers; the strict profile permits only RSA PKCS#1 SHA-256/384/512 with NULL parameters, ECDSA SHA-256/384/512 with absent parameters, and Ed25519 with absent parameters. OCSP permits the same explicit algorithm encodings and key-family/hash binding.
+
+Where the profile accepts public PEM inputs, they contain one SubjectPublicKeyInfo or certificate object respectively, with canonical base64, no duplicate object and no trailing content. UTF-8 string values and keys reject lone surrogates; JSON results are safely ASCII-escaped.
+
+The saved `examples/valid.json` is synthetic and contains only public data. Time-dependent examples retain their recorded reference `now`; tests generate fresh synthetic objects in temporary directories without changing examples.
+
+## Install and check
+
+```sh
+python -m pip install .
+python -m unittest discover -s tests -v
+saml-metadata-review examples/valid.json
+```
+
+See [ORIGIN.md](ORIGIN.md), [VALIDATION.md](VALIDATION.md), [LICENSE](LICENSE) and [UPSTREAM_LICENSE](UPSTREAM_LICENSE) for scope, evidence and attribution.
