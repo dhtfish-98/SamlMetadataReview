@@ -1,6 +1,6 @@
 from .common import *
 from .crypto import *
-import xml.etree.ElementTree as ET,re
+import xml.etree.ElementTree as ET,re,ipaddress
 from urllib.parse import urlsplit
 MD='urn:oasis:names:tc:SAML:2.0:metadata';DS='http://www.w3.org/2000/09/xmldsig#'
 BINDINGS={'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST','urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect','urn:oasis:names:tc:SAML:2.0:bindings:SOAP'}
@@ -9,9 +9,28 @@ def xs_ushort(v):
     need(re.fullmatch(r'[+]?[0-9]+',value) is not None,"invalid ASCII unsignedShort lexical form")
     return integer(int(value),0,65535)
 def https(v):
-    p=urlsplit(string(v,4096));need(p.scheme=='https' and p.hostname and not p.username and not p.password and not p.fragment,"endpoint must use HTTPS without userinfo or fragment")
+    value=string(v,4096)
+    need(re.fullmatch(r"[A-Za-z0-9\-._~:/?\[\]@!$&'()*+,;=%]+",value) is not None and not re.search(r'%(?![0-9A-Fa-f]{2})',value),"endpoint must use a valid ASCII HTTPS URI")
+    try:p=urlsplit(value);host=p.hostname;port=p.port
+    except ValueError:raise ReviewError("invalid endpoint host or port") from None
+    need(p.scheme=='https' and host and p.username is None and p.password is None and not p.fragment,"endpoint must use HTTPS without userinfo or fragment")
+    if ':' in host:
+        try:ipaddress.IPv6Address(host)
+        except ValueError:raise ReviewError("invalid endpoint host") from None
+        need('%' not in host,"scoped IP endpoint unsupported")
+    else:
+        labels=host.removesuffix('.').split('.')
+        need(len(host)<=253 and all(re.fullmatch(r'[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?',x) for x in labels),"invalid endpoint host")
+        if labels[-1].isdigit() or re.fullmatch(r'0x[0-9a-f]+',labels[-1]):
+            try:ipaddress.IPv4Address(host)
+            except ValueError:raise ReviewError("invalid endpoint IPv4 host") from None
+        else:
+            try:host.encode('ascii').decode('idna')
+            except UnicodeError:raise ReviewError("invalid endpoint IDNA host") from None
+    need(not p.netloc.endswith(':'),"empty endpoint port")
 def audit(d):
     fields(d,['metadata_xml','expected_entity_ids','now']);raw=string(d['metadata_xml'],2097152)
+    need(all(ord(c) in (9,10,13) or 0x20<=ord(c)<=0xd7ff or 0xe000<=ord(c)<=0xfffd or 0x10000<=ord(c)<=0x10ffff for c in raw),"XML character outside supported XML 1.0 text profile")
     need(not re.search(r'<!DOCTYPE|<!ENTITY',raw,re.I),"DTD and entity declarations forbidden")
     try:root=ET.fromstring(raw)
     except ET.ParseError:raise ReviewError("invalid XML metadata") from None
@@ -21,11 +40,16 @@ def audit(d):
         stack.extend((child,level+1) for child in element)
     now=instant(d['now']);ids=seq(d['expected_entity_ids'],128);need(ids and len(set(ids))==len(ids),"expected entity identities missing or duplicated")
     expected=set(string(v,4096) for v in ids);seen=set();out=[];xmlids=set();nodes=0
+    def check_id(el,attribute):
+        if attribute not in el.attrib:return
+        value=string(el.attrib[attribute],256)
+        need(re.fullmatch(r'[A-Za-z_][A-Za-z0-9_.-]*',value) is not None,"XML ID outside strict ASCII NCName profile")
+        need(value not in xmlids,"duplicate supported XML ID");xmlids.add(value)
     def visit(el,depth=0,expiry=None):
         nonlocal nodes
         nodes+=1;need(nodes<=8192 and depth<=32,"XML resource limit")
         need(el.tag.startswith('{'+MD+'}') or el.tag.startswith('{'+DS+'}'),"foreign XML vocabulary unsupported")
-        if 'ID' in el.attrib:need(el.attrib['ID'] and el.attrib['ID'] not in xmlids,"duplicate XML ID");xmlids.add(el.attrib['ID'])
+        check_id(el,'ID')
         if 'validUntil' in el.attrib:
             e=instant(el.attrib['validUntil']);expiry=min(expiry,e) if expiry else e
         if el.tag=='{'+MD+'}EntitiesDescriptor':
@@ -46,6 +70,7 @@ def audit(d):
             need(typ in ('IDPSSODescriptor','SPSSODescriptor') and typ not in roletypes,"unsupported or duplicate SAML role");roletypes.add(typ)
             roleflags={'WantAuthnRequestsSigned'} if typ=='IDPSSODescriptor' else {'WantAssertionsSigned','AuthnRequestsSigned'}
             need(set(role.attrib)<={'ID','protocolSupportEnumeration','validUntil','cacheDuration'}|roleflags,"unsupported SSO role attributes")
+            check_id(role,'ID')
             need('urn:oasis:names:tc:SAML:2.0:protocol'  in role.attrib.get('protocolSupportEnumeration','').split(),"SAML 2 protocol not declared")
             rexp=instant(role.attrib['validUntil']) if 'validUntil' in role.attrib else expiry;need(now<min(expiry,rexp),"role metadata expired")
             for flag in ('WantAuthnRequestsSigned','WantAssertionsSigned','AuthnRequestsSigned'):
@@ -57,6 +82,7 @@ def audit(d):
                     need(set(child.attrib)<={'use'} and all(k.tag=='{'+DS+'}KeyInfo' for k in child),"unsupported key descriptor semantics")
                     for info in child:
                         need(set(info.attrib)<={'Id'} and all(k.tag=='{'+DS+'}X509Data' for k in info),"unsupported key information")
+                        check_id(info,'Id')
                         for data in info:
                             need(not data.attrib and all(k.tag=='{'+DS+'}X509Certificate' and not k.attrib and not list(k) for k in data),"unsupported certificate key information")
                     need('use' not in child.attrib or child.attrib['use'] in ('signing','encryption'),"explicit key use must be signing or encryption; omitted use permits both");use=child.attrib.get('use','both')

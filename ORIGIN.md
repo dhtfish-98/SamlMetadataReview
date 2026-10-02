@@ -27,3 +27,12 @@ Primary references: [libsodium point arithmetic](https://libsodium.gitbook.io/do
 ## Defensive use and application evidence
 
 Inputs must belong to the authorized reviewer. Runtime performs no fetch, sample execution, private-key processing, key export, signing, remote modification or outbound communication. CVP organizational eligibility, evidence of a legitimate blocked task, application review and program acceptance remain OPEN. These local results alone do not establish them.
+
+## Re-audited supported semantics
+
+Endpoint Location and ResponseLocation use a strict ASCII HTTPS URI profile: valid DNS A-label or IP-literal host, valid optional port (0 through 65535), valid percent escapes, and no userinfo, fragment, controls or raw whitespace. Unicode URI text requires its corresponding ASCII/percent-encoded representation. This is selected endpoint syntax validation, not full OASIS schema validation or an endpoint ownership result. [WHATWG port state](https://url.spec.whatwg.org/#port-state) supplies the port failure reference.
+
+Supported EntitiesDescriptor/EntityDescriptor and IDPSSODescriptor/SPSSODescriptor ID attributes, plus ds:KeyInfo Id, share document-wide uniqueness checking. Supplied values must be a nonempty ASCII NCName subset matching [A-Za-z_][A-Za-z0-9_.-]* and no more than 256 characters. IDs inside opaque ds:Signature subtrees are not interpreted or included in this selected ID set. XMLDSig validation and full OASIS/XML Schema validity remain unverified.
+
+
+`metadata_xml` is Unicode XML text and must contain only characters permitted by the [XML 1.0 character production](https://www.w3.org/TR/2008/REC-xml-20081126/#charsets). NUL and forbidden controls fail before parsing, so UTF-16/UTF-32 byte carriers hidden inside JSON strings cannot bypass the DTD/entity declaration gate. Normal Unicode text and UTF-8 input remain supported; DTD/entity declarations remain forbidden.

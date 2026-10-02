@@ -1,5 +1,5 @@
 """Bounded local input and fail-closed contract shared as source, no upstream calls."""
-import base64, json, sys, pathlib, datetime, hashlib, os, stat
+import base64, json, sys, pathlib, datetime, hashlib, os, stat, math
 class ReviewError(ValueError): pass
 def need(condition,message):
     if not condition: raise ReviewError(message)
@@ -44,6 +44,7 @@ def load(raw):
         if isinstance(v,dict):
             need(len(v)<=4096,"object size limit")
             for key,x in v.items():string(key);walk(x,depth+1)
+        elif isinstance(v,float):need(math.isfinite(v),"nonfinite JSON number")
         elif isinstance(v,str):string(v,4194304)
         elif isinstance(v,list):
             need(len(v)<=4096,"array size limit")
@@ -55,7 +56,9 @@ def instant(v):
     need(d.tzinfo is not None,"reference time must have timezone");return d.astimezone(datetime.timezone.utc)
 def read(path,limit=4194304):
     path=string(path,4096)
-    fd=os.open(path,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK)
+    nofollow=getattr(os,"O_NOFOLLOW",None);nonblock=getattr(os,"O_NONBLOCK",None)
+    need(type(nofollow) is int and nofollow>0 and type(nonblock) is int and nonblock>0,"safe local-file flags unavailable on this platform")
+    fd=os.open(path,os.O_RDONLY|nofollow|nonblock)
     try:
         before=os.fstat(fd);need(stat.S_ISREG(before.st_mode),"input must be a regular file");need(before.st_size<=limit,"file size limit")
         data=bytearray()
