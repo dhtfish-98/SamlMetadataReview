@@ -1,5 +1,7 @@
 # SamlMetadataReview
 
+New implementation author: **dhtfish98**. Package version: **0.1.2**.
+
 Local SAML 2.0 metadata identity, role, binding, endpoint and public signing-certificate configuration audit, across bounded entities and inherited expiration.
 
 This is an independently implemented, complete selected offline input profile. It is not an equivalent rewrite of the entire upstream platform. Cryptographic primitives use cryptography; no upstream application is called.

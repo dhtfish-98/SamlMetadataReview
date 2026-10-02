@@ -1,5 +1,7 @@
 # Origin and implementation scope
 
+The new independent implementation is authored by **dhtfish98** (package version **0.1.2**). Upstream works retain their original attribution and license notices in this document and `UPSTREAM_LICENSE`.
+
 SamlMetadataReview independently implements this selected scope: Local SAML 2.0 metadata identity, role, binding, endpoint and public signing-certificate configuration audit, across bounded entities and inherited expiration.
 
 The research source is [SAML-Toolkits/python3-saml](https://github.com/SAML-Toolkits/python3-saml) at fixed commit `52d2ac8da3f35262755f6e1c32ba7c62a6011fe1`. Source archive SHA-256: `f010097720f4d5dedc944f4af11d7844372af00556d7bb5e53e8af7f899c3115`. Its license is MIT; the exact source license notice is retained as `UPSTREAM_LICENSE`. The new application code and documentation are licensed under MIT (`LICENSE`). The upstream application is neither imported nor executed by the production package. No upstream application source is bundled in the production package.

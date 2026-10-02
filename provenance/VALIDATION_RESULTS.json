@@ -1,22 +1,15 @@
 {
   "name": "SamlMetadataReview",
-  "group": "identity",
+  "version": "0.1.2",
   "status": "PASS",
-  "version": "0.1.1",
   "test_count": 23,
-  "source_code_sha256": "4e42677e61793ec91ebce005f9f382d0f53021c4432342d45299005e2e7060f4",
-  "wheel_sha256": "b789c88299657064967ac59f3f4dfc6f11377198624fb5571155902591455f5f",
-  "source_wheel_installed_bytes": "PASS",
-  "licenses": "PASS",
-  "dependency_check": "PASS",
-  "verified_utc": "2026-10-02T11:31:42.303568+00:00",
-  "wheel": "cvp_saml_metadata_review-0.1.1-py3-none-any.whl",
-  "verification": "Fresh per-project environment; wheel/source/installed runtime byte comparison; complete installed unittest suite; pip dependency check; license byte checks",
-  "runtime_platform": "Python 3.14 macOS arm64; remote Linux CI recorded separately",
+  "wheel_sha256": "d3a83b0476c943401f70047924e3e648411d0520b10bdf56428e303d44784e11",
+  "author": "dhtfish98",
+  "wheel": "cvp_saml_metadata_review-0.1.2-py3-none-any.whl",
+  "verification": "Rebuilt wheel, separate installed tests, package author metadata, runtime and retained third-party notice byte verification",
+  "record_kind": "Attribution patch verification",
   "application_qualification": "OPEN",
   "whole_upstream_equivalence": "OPEN",
-  "effective_deployed_protection": "OPEN",
-  "record_kind": "Current repaired release verification",
   "historical_initial_release_comparison": {
     "reference": "OneLogin fixed upstream SAML metadata XSD via lxml 6.0.2",
     "synthetic_metadata_schema_valid_and_new_static_profile_valid": true,
@@ -24,5 +17,5 @@
     "schema_invalid_key_use_role_endpoint_and_role_flag_rejected_by_both": true,
     "ASCII_unsignedShort_valid_and_invalid_index_vectors_match_XSD": true
   },
-  "comparison_limit": "Initial fixed vectors only; see VALIDATION.md for additional source re-audit vectors. No full upstream equivalence."
+  "comparison_limit": "Initial fixed vectors only; not full upstream equivalence."
 }
