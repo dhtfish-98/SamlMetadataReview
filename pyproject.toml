@@ -8,8 +8,8 @@ authors = [{name = "dhtfish98"}]
 description = "Local SAML 2.0 metadata identity, role, binding, endpoint and public signing-certificate configuration audit, across bounded entities and inherited expiration."
 requires-python = ">=3.11"
 license = "MIT"
-license-files = ["LICENSE", "UPSTREAM_LICENSE"]
-readme = "README.md"
+license-files = ["项目文档/LICENSE", "UPSTREAM_LICENSE"]
+readme = "项目文档/README.md"
 dependencies = ["cryptography==50.0.2", "PyNaCl==1.6.2"]
 [project.scripts]
 saml-metadata-review = "saml_metadata_review.cli:entry"

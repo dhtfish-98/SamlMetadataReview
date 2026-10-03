@@ -1,0 +1,30 @@
+{
+  "schema": "project-build-layout.v1",
+  "project": "SamlMetadataReview",
+  "author": "dhtfish98",
+  "kind": "python",
+  "base_public_commit": "8e4580351f8efbf57792bc864c95f99259a15b84",
+  "restored_inputs": [
+    {
+      "original": "LICENSE",
+      "stored": "项目文档/LICENSE",
+      "sha256": "de926d6c22d9e061af6158b0f23146ce036bfb2a562f2f406acec2dc4bd8b298"
+    },
+    {
+      "original": "ORIGIN.md",
+      "stored": "项目文档/ORIGIN.md",
+      "sha256": "692ee31eedd45b618919a2d1d613003b28cd17b4df40d35c688482ea82fda305"
+    },
+    {
+      "original": "README.md",
+      "stored": "项目文档/README.md",
+      "sha256": "d24da9a6b66baed879eb8e3ba6450b9fb83be28a83e899a726ba8c45d0505fb1"
+    },
+    {
+      "original": "VALIDATION.md",
+      "stored": "项目文档/VALIDATION.md",
+      "sha256": "6182de18b8c10f876defbc344c4bbd1ed65e1c474e34c906b4963ba0def93f2f"
+    }
+  ],
+  "platform_entries": []
+}
