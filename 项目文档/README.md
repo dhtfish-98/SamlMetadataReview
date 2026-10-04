@@ -36,7 +36,7 @@ python -m unittest discover -s tests -v
 saml-metadata-review examples/valid.json
 ```
 
-See [ORIGIN.md](<ORIGIN.md>), [VALIDATION.md](<VALIDATION.md>), [LICENSE](<LICENSE>) and [UPSTREAM_LICENSE](<../UPSTREAM_LICENSE>) for scope, evidence and attribution.
+See [ORIGIN.md](<ORIGIN.md>), [VALIDATION.md](<VALIDATION.md>), [LICENSE](<LICENSE>) and [UPSTREAM_LICENSE](<UPSTREAM_LICENSE>) for scope, evidence and attribution.
 
 ## File input platform contract
 
