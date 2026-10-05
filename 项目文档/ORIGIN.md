@@ -1,6 +1,6 @@
 # Origin and implementation scope
 
-The new independent implementation is authored by **dhtfish98** (package version **0.1.2**). Upstream works retain their original attribution and license notices in this document and `UPSTREAM_LICENSE`.
+The new independent implementation is authored by **dhtfish98** (package version **0.1.3**). Upstream works retain their original attribution and license notices in this document and `UPSTREAM_LICENSE`.
 
 SamlMetadataReview independently implements this selected scope: Local SAML 2.0 metadata identity, role, binding, endpoint and public signing-certificate configuration audit, across bounded entities and inherited expiration.
 

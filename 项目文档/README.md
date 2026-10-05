@@ -2,7 +2,7 @@
 
 # SamlMetadataReview
 
-New implementation author: **dhtfish98**. Package version: **0.1.2**.
+New implementation author: **dhtfish98**. Package version: **0.1.3**.
 
 Local SAML 2.0 metadata identity, role, binding, endpoint and public signing-certificate configuration audit, across bounded entities and inherited expiration.
 
